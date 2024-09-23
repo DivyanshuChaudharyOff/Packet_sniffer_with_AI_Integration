@@ -1,30 +1,42 @@
-import os
 from flask import Flask, render_template, jsonify
-from dotenv import load_dotenv
-from sniffer import capture_packets, send_to_llm
-
-# Load environment variables from .env file
-load_dotenv()
+from sniffer import capture_and_analyze_packets
+from geolocation import get_geolocation
 
 app = Flask(__name__)
 
-# Main route to render the dashboard
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Route to capture packets and send data to LLM
-@app.route('/analyze_packets', methods=['GET'])
-def analyze_packets():
-    # Capture packets
-    packets = capture_packets(interface="eth0")  # Replace with actual network interface
-    packet_summary = ' '.join(packets)  # Create a string summary of captured packets
+@app.route('/capture')
+def capture():
+    # Capture and analyze packets
+    packets = capture_and_analyze_packets()
 
-    # Send packet summary to LLM for analysis
-    llm_result = send_to_llm(packet_summary)
+    # You can modify this to send the packet, geolocation, and LLM analysis to the front-end
+    packet_data = []  # This will hold the data structure for all packet captures
 
-    # Return the result to be rendered on the front end
-    return jsonify({'llm_result': llm_result})
+    for packet in packets:
+        src_ip = packet['src_ip']
+        dst_ip = packet['dst_ip']
+        src_geo = get_geolocation(src_ip)
+        dst_geo = get_geolocation(dst_ip)
+        llm_result = packet['llm_analysis']
+
+        packet_data.append({
+            "src_ip": src_ip,
+            "src_geo": src_geo,
+            "dst_ip": dst_ip,
+            "dst_geo": dst_geo,
+            "llm_result": llm_result
+        })
+
+    return jsonify(packet_data)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
