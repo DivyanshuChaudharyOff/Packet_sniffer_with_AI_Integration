@@ -66,11 +66,6 @@ print(fake_file)  # Will print: resume.docx, secret_plans.pdf
 
 from geolocation import log_geolocation
 
-# Function to capture and analyze packets
-def capture_and_analyze_packets(interface="eth0"):
-    packets = capture_packets(interface)
-    for packet in packets:
-        packet_data = packet.summary()
         
         # Extract IP address from packet (assuming it's an IP packet)
         src_ip = packet[scapy.IP].src if packet.haslayer(scapy.IP) else "Unknown"
