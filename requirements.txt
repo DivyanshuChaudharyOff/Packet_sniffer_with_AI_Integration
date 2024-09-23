@@ -2,3 +2,4 @@ flask
 scapy
 OpenAI
 requests
+python-dotenv
