@@ -30,3 +30,37 @@ def send_to_llm(packet_data):
         return response.json()['choices'][0]['text']
     else:
         return f"Error: {response.status_code}"
+
+
+
+
+
+# Fake file directory structure
+fake_file_directory = {
+    "home": {
+        "user": {
+            "documents": ["resume.docx", "secret_plans.pdf"],
+            "downloads": ["ssh_config.txt", "hacktool.exe"],
+        },
+        "admin": {
+            "logs": ["system_log.txt", "firewall_log.txt"],
+            "scripts": ["backup.sh", "start_server.py"],
+        }
+    }
+}
+
+# Function to simulate an attacker accessing the fake file system
+def browse_fake_file_system(path):
+    parts = path.strip('/').split('/')
+    location = fake_file_directory
+    for part in parts:
+        if part in location:
+            location = location[part]
+        else:
+            return "Directory not found."
+    return location if isinstance(location, dict) else ', '.join(location)
+
+# Example usage
+fake_file = browse_fake_file_system('/home/user/documents')
+print(fake_file)  # Will print: resume.docx, secret_plans.pdf
+
