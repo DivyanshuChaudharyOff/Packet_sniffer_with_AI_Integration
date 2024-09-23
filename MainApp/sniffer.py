@@ -64,3 +64,25 @@ def browse_fake_file_system(path):
 fake_file = browse_fake_file_system('/home/user/documents')
 print(fake_file)  # Will print: resume.docx, secret_plans.pdf
 
+from geolocation import log_geolocation
+
+# Function to capture and analyze packets
+def capture_and_analyze_packets(interface="eth0"):
+    packets = capture_packets(interface)
+    for packet in packets:
+        packet_data = packet.summary()
+        
+        # Extract IP address from packet (assuming it's an IP packet)
+        src_ip = packet[scapy.IP].src if packet.haslayer(scapy.IP) else "Unknown"
+        dst_ip = packet[scapy.IP].dst if packet.haslayer(scapy.IP) else "Unknown"
+        
+        # Log geolocation info
+        src_geo = log_geolocation(src_ip)
+        dst_geo = log_geolocation(dst_ip)
+        
+        # Send to LLM for analysis
+        llm_result = handle_analysis_and_alert(packet_data)
+        
+        print(f"Source IP: {src_ip} -> Geolocation: {src_geo}")
+        print(f"Destination IP: {dst_ip} -> Geolocation: {dst_geo}")
+        print(f"LLM Analysis: {llm_result}")
