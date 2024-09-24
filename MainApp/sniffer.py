@@ -12,7 +12,8 @@ def capture_packets(interface="eth0"):
 # Function to send packet data to LLM (AI model)
 def send_to_llm(packet_data):
     LLM_API_URL = "https://api.openai.com/v1/engines/davinci/completions"
-    API_KEY = os.getenv('OPENAI_API_KEY')  # Fetch API key from environment variable
+    API_KEY = os.getenv('OPENAI_API_KEY')  # Fetch API key from environment variable  
+# Fetch API key from environment variable
 
     headers = {
         'Content-Type': 'application/json',
