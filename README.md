@@ -35,7 +35,7 @@ This project is a network packet sniffer built using Python (Flask for backend, 
 - Scapy
 - HTML/CSS/JavaScript for the frontend
 
-### Python Dependencies:
+### Python Dependencies:-
 
 You can install the required Python packages using `pip`:
 
